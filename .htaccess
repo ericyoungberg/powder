@@ -1,0 +1,15 @@
+#
+## .htaccess
+## Properly routes requests to the API 
+#
+
+# Make sure we have the Rewrite Module installed/enabled
+  RewriteEngine On  
+
+  RewriteCond %{REQUEST_FILENAME} -f
+  RewriteRule ^.*$ - [L]
+
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^.*$ - [L]
+
+  RewriteRule api/(.*)$ api/router.php [L]
