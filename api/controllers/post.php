@@ -1,18 +1,17 @@
 <?php 
 
-require_once('../classes/class-network.php');
+require_once 'classes/class-network.php';
 
 class PostController {
   public static function find() {
 
-    $callback = function() {
-      // Fetch the data that was sent with the request
-      $data = Network::prepareData();
+    $data = Network::analyzeRequest();
 
-      Network::respond("Nothing here yet", 200);
-    };
-
-    return $callback;
+    if($data) {
+      Network::respond($data, 200);
+    } else {
+      Network::respond('{}', 404);  
+    }
   }
 }
 

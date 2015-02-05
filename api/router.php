@@ -8,7 +8,7 @@
 */
 
 // Import the Router
-require_once('../classes/class-router.php');
+require_once 'classes/class-router.php';
 $router = new Router();
 
 // Routes

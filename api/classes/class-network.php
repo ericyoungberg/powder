@@ -1,6 +1,7 @@
 <?php
 
 /*
+ ** FILE: classes/class-network.php
  ** CLASS: Network
  ** DEPENDENCIES: N/A
  ** Utility functions for parsing and communicating over the wire
@@ -9,7 +10,7 @@
 class Network {
 
   // Figures out whether to pull the data sent over POST/GET
-  public static function prepareData() {
+  public static function analyzeRequest() {
 
     $data = Array();
 
@@ -23,7 +24,7 @@ class Network {
         $data = $_GET;
         break;
       default:
-        Network::respond('Could not parse HTTP method', 405);
+        Network::respond("Could not parse HTTP method", 405);
         return;
     }
 
@@ -47,21 +48,21 @@ class Network {
     // Parse the code passed
     switch($code) {
       case 200:
-        return 'OK';
+        $status = 'OK';
         break;
       case 404:
-        return 'Not Found';
+        $status = 'Not Found';
         break;
       case 405:
-        return 'Method Not Allowed';
+        $status = 'Method Not Allowed';
         break;
       default:
-        return 'Internal Server Error';
-        break;
+        $status = 'Internal Server Error';
+        $code = 500;
     }
 
     // Prep and send
-    header('HTTP/1.1:'.$code.' '.$status); 
+    header('HTTP/1.1: '.$code.' '.$status); 
     echo json_encode($data);
   }
   // (END) respond

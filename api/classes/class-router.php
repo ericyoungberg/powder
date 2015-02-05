@@ -8,19 +8,21 @@
  ** declared when the app starts up.
 */
 
-// Dependencies
-// ============
-require_once('class-route.php');
-require_once('class-network.php');
+require_once 'class-route.php';
 
 
 class Router {
 
+  /*--------------------------------------------------------
+    ** Properties
+  */
+
   private $_routes = Array();  // Holds Route objects to iterate through
 
 
-  // Public action methods
-  // ====================
+  /*--------------------------------------------------------
+    ** Public Methods
+  */
 
   // Finds the correct Route based upon the method and URI
   public function handleRequest() {
@@ -32,9 +34,8 @@ class Router {
 
     $arguments = explode('/', ltrim($URI, '/'));
 
-    $endpoint = array_shift($arguments);
-
-    error_log("METHOD: ".$_SERVER['REQUEST_METHOD']);
+    // Strip any query string that may have been sent in the URI
+    $endpoint = preg_replace('/[?].*/', '', array_shift($arguments));
 
     // Find the right route
     foreach($this->_routes as $route) {
@@ -42,8 +43,6 @@ class Router {
 
         // If there is a dynamic segment, make sure that the route is looking for a dynamic segment
         if(array_key_exists(0, $arguments) && !$route->hasDynamicSegment()) continue;
-
-        error_log("FOUND!");
 
         // This is now the most likely path
         $candidate = $route;
@@ -62,41 +61,42 @@ class Router {
   // (END) handleRequest
 
 
-  
-  // Public HTTP Verbs
-  // =================
+  /*--------------------------------------------------------
+    ** HTTP Verbs
+  */
 
   /*
-   * These are mainly methods to wrap the addRoute method. 
+   * These are mainly helper methods to wrap the addRoute method with defaults. 
   */
   
-  public function get($path, $class, $func = 'find') {
-    $this->addRoute('GET', $path, $class, $func);
+  public function get($path, $controller, $func = 'find') {
+    $this->addRoute('GET', $path, $controller, $func);
   }
 
-  public function post($path, $class) {
-    $this->addRoute('POST', $path, $class); 
+  public function post($path, $controller, $func = 'create') {
+    $this->addRoute('POST', $path, $controller); 
   }
 
-  public function delete($path, $func) {
-    $this->addRoute('DELETE', $path, $func); 
+  public function delete($path, $controller, $func = 'remove') {
+    $this->addRoute('DELETE', $path, $controller, $func); 
   }
 
-  public function put($path, $func) {
-    $this->addRoute('PUT', $path, $func);  
+  public function put($path, $controller, $func = 'update') {
+    $this->addRoute('PUT', $path, $controller, $func);  
   }
 
 
-  // Private methods
-  // ===============
+  /*--------------------------------------------------------
+    ** Private Methods
+  */
 
   // Sanitizes and adds a new Route to the routes array
-  private function addRoute($method, $path, $class, $func) {
+  private function addRoute($method, $path, $controller, $func) {
 
     // Make sure that the path has been formatted correctly
     if(substr($path, 1) != '/') $path = '/'.$path;
 
-    $this->_routes[] = new Route($method, rtrim($path, '/'), $class, $func);
+    $this->_routes[] = new Route($method, rtrim($path, '/'), $controller, $func);
   }
   // (END) addRoute
 
