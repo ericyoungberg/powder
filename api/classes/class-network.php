@@ -67,6 +67,14 @@ class Network {
   }
   // (END) respond
 
+
+  // Figures out which method is used, then grabs the URI from the query string.
+  // This is only used if they can't utilize the .htaccess file
+  public static function parseQueryURI() {
+    return ($_SERVER['REQUEST_METHOD'] == 'GET') ? $_GET['restful'] : $_POST['restful']; 
+  }
+  // (END) parseAltURI
+
 }
 // (END) Network
 

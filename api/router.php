@@ -18,7 +18,7 @@ $router = new Router();
  */
 
 // Posts
-$router->get('/posts', 'PostController', 'find');
+$router->get('/posts', 'PostController');
 
 
 // Route the request accordingly

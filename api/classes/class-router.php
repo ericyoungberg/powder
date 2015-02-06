@@ -3,12 +3,14 @@
 /*
  ** FILE: classes/class-router.php
  ** CLASS: Router
- ** DEPENDENCIES: Route
+ ** DEPENDENCIES: Route, Network, (env)
  ** Creates an expandble router that handles possible connections when
  ** declared when the app starts up.
 */
 
 require_once 'class-route.php';
+require_once 'class-network.php';
+require_once 'env.php';
 
 
 class Router {
@@ -29,8 +31,8 @@ class Router {
 
     $candidate = new Route();   // The most likely path
 
-    // Strip the API from the front
-    $URI = substr($_SERVER['REQUEST_URI'], strlen('/api'));
+    // We find the URI in the query string if the server doesn't allow .htaccess files or mod_rewrite
+    $URI = (HTACCESS_ENABLED) ? substr($_SERVER['REQUEST_URI'], strlen('/api')) : Network::parseQueryURI();
 
     $arguments = explode('/', ltrim($URI, '/'));
 

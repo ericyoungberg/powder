@@ -9,10 +9,16 @@
 
 
 /*
+ * CONFIGURATION
+ */
+define("HTACCESS_ENABLED", true);
+
+
+/*
  * DATABASE
  */
 define('DB_HOST', 'localhost');
-define('DB_NAME', 'apiexample');
+define('DB_NAME', 'testdb');
 define('DB_USERNAME', 'hob');
 define('DB_PASSWORD', 'testpass');
 

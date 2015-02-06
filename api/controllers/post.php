@@ -1,17 +1,23 @@
 <?php 
 
 require_once 'classes/class-network.php';
+require_once 'classes/class-database.php';
 
 class PostController {
   public static function find() {
 
-    $data = Network::analyzeRequest();
+    $dbh = Database::connect();
 
-    if($data) {
-      Network::respond($data, 200);
-    } else {
-      Network::respond('{}', 404);  
+    $stmt = $dbh->prepare('SELECT * FROM posts');  
+    $stmt->execute();
+    $stmt->setFetchMode(PDO::FETCH_OBJ);
+
+    $data = array();
+    while($row = $stmt->fetch()) {
+      $data[] = $row;
     }
+
+    Network::respond($data, 200);
   }
 }
 
