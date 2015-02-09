@@ -10,7 +10,6 @@
 
 // We need access to all of the possible controllers for Route::execute
 require_once 'controllers/manifest.php';
-require_once 'controllers/post.php';
 
 
 class Route {
