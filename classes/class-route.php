@@ -8,6 +8,8 @@
 */
 
 
+require_once 'class-network.php';
+
 // We need access to all of the possible controllers for Route::execute
 require_once 'controllers/manifest.php';
 
@@ -34,11 +36,13 @@ class Route {
   public function __construct($method = '', $path = '', $controller = '', $func = '') {
 
     // Parse the string into an endpoint and possibly a dynamic segment
-    $path_= explode('/', ltrim($path, '/'));
+    $boomPath= explode('/', ltrim($path, '/'));
 
-    $this->_endpoint = array_shift($path_);
+    $this->_endpoint = array_shift($boomPath);
 
-    if(array_key_exists(0, $path_) && substr($path_[0], 0) == ':') $_dynamic = $path_[0]; 
+    if(array_key_exists(0, $boomPath) && substr($boomPath[0], 0, 1) == ':') {
+      $this->_dynamic = substr($boomPath[0], 1, strlen($boomPath[0])); 
+    }
 
     // Store the remaining parameters
     $this->_method = $method;
@@ -65,6 +69,10 @@ class Route {
     return $this->_endpoint; 
   }
 
+  public function getDynamicSegment() {
+    return $this->_dynamic;
+  }
+
   public function hasDynamicSegment() {
     return ($this->_dynamic != '') ? true : false;
   }
@@ -80,7 +88,7 @@ class Route {
     if(is_callable($this->_controller, $this->_func)) {
       call_user_func(array($this->_controller, $this->_func)); 
     } else {
-      Network::respond("Route::execute(): $this->_controller isn't found. Please check your controllers/manifest!", 500); 
+      Network::respond("Route::execute(): ".$this->_controller." isn't found. Please check your controllers/manifest!", 500); 
     }
   }
   // (END) execute

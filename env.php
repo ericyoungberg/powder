@@ -9,9 +9,9 @@
 
 
 /*
- * CONFIGURATION
+ * ENVIRONMENT
  */
-define("HTACCESS_ENABLED", true);
+define("ROOT", 'powder');
 
 
 /*
@@ -21,5 +21,14 @@ define('DB_HOST', 'localhost');
 define('DB_NAME', 'testdb');
 define('DB_USERNAME', 'hob');
 define('DB_PASSWORD', 'testpass');
+
+define('LOCAL_SALT', 'himalayan');
+
+
+/*
+ * CONFIGURATION
+ */
+define("HTACCESS_ENABLED", true);
+
 
 ?>

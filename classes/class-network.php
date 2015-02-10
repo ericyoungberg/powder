@@ -14,11 +14,13 @@ class Network {
 
     $data = Array();
 
-    switch($_SERVER['REQUEST_METHOD']) {
+    switch(Network::parseRequestMethod()) {
       case 'DELETE':
-      case 'PUT':
       case 'POST':
         $data = $_POST;
+        break;
+      case 'PUT':
+        parse_str(file_get_contents("php://input"), $data);
         break;
       case 'GET':
         $data = $_GET;
@@ -41,6 +43,20 @@ class Network {
   }
   // (END) sanitize
 
+  // Figures out the method that was used in the request
+  // PUT and DELETE get buried in POST
+  public static function parseRequestMethod() {
+
+    $method = $_SERVER['REQUEST_METHOD'];
+
+    // Check if PUT or DELETE were used
+    if($method == 'POST' && array_key_exists('HTTP_X_HTTP_METHOD', $_SERVER)) {
+      $method = $_SERVER['HTTP_X_HTTP_METHOD']; 
+    }
+
+    return $method;
+  }
+  // (END) parseRequestMethod
 
   // Preps and send the data back to the client
   public static function respond($data, $code) {
@@ -71,7 +87,7 @@ class Network {
   // Figures out which method is used, then grabs the URI from the query string.
   // This is only used if they can't utilize the .htaccess file
   public static function parseQueryURI() {
-    return ($_SERVER['REQUEST_METHOD'] == 'GET') ? $_GET['restful'] : $_POST['restful']; 
+    return (Network::parseRequestMethod() == 'GET') ? $_GET['restful'] : $_POST['restful']; 
   }
   // (END) parseAltURI
 

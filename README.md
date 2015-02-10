@@ -1,5 +1,5 @@
 # Powder
-A RESTful API template for PHP
+A RESTful API framework for PHP. _0.2.0_
 
 ###Installation
 1. `git clone` the repository into your existing project.

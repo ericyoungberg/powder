@@ -10,7 +10,11 @@
 require_once 'class-network.php';
 require 'env.php';
 
-
+/**
+ * The Database class will save you the hassle of having to write your database 
+ * connections each time that you write a new method for your controllers. I hope to 
+ * expand the use of this class.
+ */
 class Database {
 
   // Creates a PDO connection and returns it the the user
