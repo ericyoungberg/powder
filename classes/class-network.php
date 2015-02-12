@@ -3,11 +3,12 @@
 /*
  ** FILE: classes/class-network.php
  ** CLASS: Network
- ** DEPENDENCIES: (env)
+ ** DEPENDENCIES: [cleanString], (env)
  ** Utility functions for parsing and communicating over the wire
 */
 
 require_once 'env.php';
+require_once 'classes/util/clean-string.php';
 
 class Network {
 
@@ -55,7 +56,10 @@ class Network {
    * @param Array(*) &$data
    */
   public static function sanitize(&$data) {
-
+    if(S_UTF8) $data = cleanString($data);
+    if(S_HTML) $data = htmlspecialchars($data);
+    if(S_NEWLINE) $data = str_replace(array('\r', '\n'), ' ', $data);
+    if(S_SPECIAL) $data = preg_replace(array('/[\\s-]+/', '/[^A-Za-z0-9\. -]+/'), '', $data); 
   }
   // (END) sanitize
 

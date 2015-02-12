@@ -31,4 +31,12 @@ define("HTACCESS_ENABLED", true);   // Set this to false if you can't use .htacc
 define("CROSS_ORIGIN", true);       // Whether you want CORS
 
 
+/*
+ * SANITIZATION
+ */
+define('S_UTF8', true);             // Filters out UTF-8 characters, can be good for SEO
+define('S_HTML', true);             // Filters out HTML
+define('S_NEWLINE', true);          // Filters out newline characters
+define('S_SPECIAL', true);          // Filters out all non-alphanumerics
+
 ?>
