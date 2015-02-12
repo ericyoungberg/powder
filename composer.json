@@ -1,6 +1,7 @@
 {
   "name": "powder/powder",
   "type": "library",
+  "version": "1.0.0",
   "description": "RESTful API framework for PHP 5",
   "keywords": ["api", "rest", "restful"],
   "homepage": "http://github.com/ericyoungberg/powder",
