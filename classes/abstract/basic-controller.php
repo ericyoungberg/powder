@@ -174,8 +174,6 @@ abstract class BasicController {
     
     $firstKey = true;
 
-    error_log("TITLE: ".$data['title']);
-
     foreach($data as $k => $v) {
       if($firstKey) {
         $firstKey = false; 
@@ -187,13 +185,9 @@ abstract class BasicController {
 
     $query .= " WHERE $column = :$column";
 
-    error_log("QUERY: $query");
-
     $stmt = $dbh->prepare($query);
 
     $data[$column] = $identifier;
-
-    error_log("DAT: ".$data[$column]);
 
     if($stmt->execute($data)) {
       Network::respond("POW_UPDATED", 200);

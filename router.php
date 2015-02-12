@@ -21,15 +21,6 @@ $router = new Router();
  * See documentation/README for details about how to set up routes.
  */
 
-// Posts
-$router->get('/posts', 'PostsController');
-$router->get('/posts/:title', 'PostsController', 'findOne');
-$router->post('/posts', 'PostsController');
-$router->delete('/posts/:title', 'PostsController');
-$router->put('/posts/:title', 'PostsController');
-
-
-
 
 
 
@@ -37,7 +28,7 @@ $router->put('/posts/:title', 'PostsController');
 /*----------------------------------------------------------
 */
 /*
- * After all of the routes are declared, we need to figure out which 
+ * After all of the routes are declared, figure out which 
  * route we need to execute.
  */
 $router->handleRequest();

@@ -4,15 +4,20 @@
  ** FILE: classes/class-router.php
  ** CLASS: Router
  ** DEPENDENCIES: Route, Network, (env)
- ** Creates an expandble router that handles possible connections when
- ** declared when the app starts up.
+ ** Creates an expandable router that handles possible connections when
+ ** declared after the app starts up.
 */
 
 require_once 'class-route.php';
 require_once 'class-network.php';
 require_once 'env.php';
 
-
+/**
+ * The Router is the bulk of how Powder works. It's responsible for 
+ * finding the Route that has been specified in the router.php file 
+ * then executing the supplied method that the route has been declared
+ * with. 
+ */
 class Router {
 
   /*--------------------------------------------------------
@@ -29,6 +34,7 @@ class Router {
   public function __constructor() {
 
     // Set up our headers when instantiating our Router
+    if(CROSS_ORIGIN) header("Access-Control-Allow-Origin: *");
     header("Access-Control-Allow-Methods: *");
     header("Content-type: application/json"); 
   }
@@ -38,7 +44,12 @@ class Router {
     ** Public Methods
   */
 
-  // Finds the correct Route based upon the method and URI
+  /**
+   * Parses the Request URI and finds a matching Route to handle
+   * the request.
+   *
+   * @return NULL
+   */
   public function handleRequest() {
 
     $prefix = (ROOT) ? '/'.ROOT : '';
@@ -47,7 +58,7 @@ class Router {
     $method = Network::parseRequestMethod();
 
     // We find the URI in the query string if the server doesn't allow .htaccess files or mod_rewrite
-    $URI = (HTACCESS_ENABLED) ? substr($_SERVER['REQUEST_URI'], strlen($prefix)) : Network::parseQueryURI();
+    $URI = (HTACCESS_ENABLED) ? substr($_SERVER['REQUEST_URI'], strlen($prefix)) : $_GET['restful'];
 
     $arguments = explode('/', trim($URI, '/'));
 
@@ -71,7 +82,7 @@ class Router {
         // This is now the most likely path
         return $route->execute();
       } else {
-        unset($route); 
+        unset($route);  // Free up some memory then 
       }
     } // (END) foreach 
   }
@@ -82,10 +93,13 @@ class Router {
     ** HTTP Verbs
   */
 
-  /*
+  /**
    * These are mainly helper methods to wrap the addRoute method with defaults. 
-  */
-  
+   * 
+   * @param string $path
+   * @param string $controller
+   * @param string $func
+   */
   public function get($path, $controller, $func = 'find') {
     $this->addRoute('GET', $path, $controller, $func);
   }
@@ -107,12 +121,16 @@ class Router {
     ** Private Methods
   */
 
-  // Sanitizes and adds a new Route to the routes array
+  /**
+   * Adds a new Route to the routes array. Only called
+   * by the HTTP Verb methods defined above.
+   *
+   * @param string $method
+   * @param string $path
+   * @param string $controller
+   * @param string $func
+   */
   private function addRoute($method, $path, $controller, $func) {
-
-    // Make sure that the path has been formatted correctly
-    if(substr($path, 1) != '/') $path = '/'.$path;
-
     $this->_routes[] = new Route($method, rtrim($path, '/'), $controller, $func);
   }
   // (END) addRoute

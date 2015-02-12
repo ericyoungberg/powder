@@ -8,12 +8,16 @@
 */
 
 
-require_once 'class-network.php';
-
 // We need access to all of the possible controllers for Route::execute
 require_once 'controllers/manifest.php';
+require_once 'class-network.php';
 
 
+/**
+ * Stores all information necessary for declaring unique and dynamic routes.
+ * The controller and method that are stored on these objects are executed
+ * by the Router.
+ */
 class Route {
 
   /*--------------------------------------------------------
@@ -32,14 +36,23 @@ class Route {
    ** Constructor
   */
 
-  // Default parameters are for overloading a blank Route object (needed by Router::handleRequest)
+  /**
+   * Default parameters are for overloading a blank Route object (needed by Router::handleRequest)
+   * 
+   * @param string $method
+   * @param string $path
+   * @param string $controller
+   * @param string $func
+   */
   public function __construct($method = '', $path = '', $controller = '', $func = '') {
 
     // Parse the string into an endpoint and possibly a dynamic segment
     $boomPath= explode('/', ltrim($path, '/'));
 
+    // Grab the endpoint off of the array
     $this->_endpoint = array_shift($boomPath);
 
+    // Check to see if a dynamic segment has been defined
     if(array_key_exists(0, $boomPath) && substr($boomPath[0], 0, 1) == ':') {
       $this->_dynamic = substr($boomPath[0], 1, strlen($boomPath[0])); 
     }
@@ -57,6 +70,11 @@ class Route {
    ** Getters
   */
 
+  /**
+   * Basic getter functions
+   *
+   * @return string
+   */
   public function getMethod() {
     return $this->_method; 
   }
@@ -73,6 +91,11 @@ class Route {
     return $this->_dynamic;
   }
 
+  /**
+   * Checks to see if a dynamic segment exists.
+   *
+   * @return bool
+   */
   public function hasDynamicSegment() {
     return ($this->_dynamic != '') ? true : false;
   }
@@ -82,8 +105,10 @@ class Route {
    ** Public Methods
   */
 
-  // Executes the referenced function passing in the data
-  // sent from the client
+  /**
+   * Executes the referenced function passing in the data
+   * sent from the client.
+   */
   public function execute() {
     if(is_callable($this->_controller, $this->_func)) {
       call_user_func(array($this->_controller, $this->_func)); 
@@ -92,15 +117,7 @@ class Route {
     }
   }
   // (END) execute
-
-
-  /*--------------------------------------------------------
-   ** Private Methods
-  */
-
-  private function buildDynamicSegment() {
   
-  }
 }
 
 ?>
