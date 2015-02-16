@@ -52,13 +52,17 @@ class Router {
    */
   public function handleRequest() {
 
-    $prefix = (ROOT) ? '/'.ROOT : '';
-    $prefix .= '/api';
+    // Make sure that there are routes define before moving forward
+    if(empty($this->_routes)) {
+      Network::respond("POW_ERROR Router::handleRequest(): You have not declared any routes in router.php!", 500); 
+      return;
+    }
 
     $method = Network::parseRequestMethod();
 
     // We find the URI in the query string if the server doesn't allow .htaccess files or mod_rewrite
-    $URI = (HTACCESS_ENABLED) ? substr($_SERVER['REQUEST_URI'], strlen($prefix)) : $_GET['restful'];
+    $URI = (HTACCESS_ENABLED) ? substr($_SERVER['REQUEST_URI'], strpos($_SERVER['REQUEST_URI'], '/api') + strlen('/api')) 
+                              : $_GET['restful'];
 
     $arguments = explode('/', trim($URI, '/'));
 
@@ -85,6 +89,10 @@ class Router {
         unset($route);  // Free up some memory then 
       }
     } // (END) foreach 
+  
+    // Send a message if you can't find the proper route 
+    Network::respond("POW_ERROR Router::handleRequest(): You have not declared a route to handle this request.", 500);
+
   }
   // (END) handleRequest
 
@@ -131,6 +139,11 @@ class Router {
    * @param string $func
    */
   private function addRoute($method, $path, $controller, $func) {
+
+    if(empty($controller)) {
+      return Network::respond("POW_ERROR Router::addRoute(): You need to give a controller name when declaring routes!", 500); 
+    }
+
     $this->_routes[] = new Route($method, rtrim($path, '/'), $controller, $func);
   }
   // (END) addRoute

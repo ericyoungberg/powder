@@ -10,7 +10,6 @@
 /*
  * ENVIRONMENT
  */
-define("ROOT", '');                 // Root of your app
 define('LOCAL_SALT', 'himalayan');  // The constant salt used for hashing
 
 

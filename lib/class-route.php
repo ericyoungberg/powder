@@ -110,10 +110,10 @@ class Route {
    * sent from the client.
    */
   public function execute() {
-    if(is_callable($this->_controller, $this->_func)) {
+    if(is_callable(array($this->_controller, $this->_func))) {
       call_user_func(array($this->_controller, $this->_func)); 
     } else {
-      Network::respond("Route::execute(): ".$this->_controller." isn't found. Please check your controllers/manifest!", 500); 
+      Network::respond("POW_ERROR Route::execute(): ".$this->_controller." isn't found. Please check your controllers manifest.php file!", 500); 
     }
   }
   // (END) execute
