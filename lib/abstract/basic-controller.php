@@ -75,10 +75,12 @@ abstract class BasicController {
       } 
 
       // If not, report that the record isn't found
-      Network::respond('Could not find a record with '.$column.' as '.$identifier, 404);
+      Network::respond('POW_ERROR: Could not find a record with '.$column.' as '.$identifier, 404);
     } else {
-      Network::respond('BasicController::findOne(): Could not connect to the database. Sorry!', 500); 
+      Network::respond('POW_ERROR BasicController::findOne(): Could not connect to the database. Sorry!', 500); 
     }
+
+    $dbh = null;
   }
   // (END) findOne
   
@@ -126,8 +128,10 @@ abstract class BasicController {
     if($stmt->execute($data)) {
       Network::respond($data, 200);
     } else {
-      Network::respond("The data passed to the server was not correctly formatted for the table in the database!", 500); 
+      Network::respond("POW_ERROR BasicController::create(): The data passed to the server was not correctly formatted for the table in the database!", 500); 
     }
+
+    $dbh = null;
   }
   // (END) create
 
@@ -151,9 +155,10 @@ abstract class BasicController {
     if($stmt->execute()) {
       Network::respond("POW_REMOVED", 200);
     } else {
-      Network::respond('BasicController::remove(): Could not connect to the database. Sorry!', 500); 
+      Network::respond('POW_ERROR BasicController::remove(): Could not connect to the database. Sorry!', 500); 
     }
 
+    $dbh = null;
   }
   // (END) remove
 
@@ -192,8 +197,10 @@ abstract class BasicController {
     if($stmt->execute($data)) {
       Network::respond("POW_UPDATED", 200);
     } else {
-      Network::respond("BasicController::update(): Could not update $entity!", 500); 
+      Network::respond("POW_ERROR BasicController::update(): Could not update $entity!", 500); 
     }
+
+    $dbh = null;
   }
   // (END) update
 
