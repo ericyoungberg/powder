@@ -1,7 +1,7 @@
 <?php 
 
 /*
- ** FILE: classes/util/clean-string.php
+ ** FILE: lib/util/clean-string.php
  ** AUTHOR: Ignacio Pascual
  ** URL: http://www.unexpectedit.com/php/php-clean-string-of-utf8-chars-convert-to-similar-ascii-char
 */

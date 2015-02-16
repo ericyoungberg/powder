@@ -1,14 +1,14 @@
 <?php
 
 /*
- ** FILE: classes/class-network.php
+ ** FILE: lib/class-network.php
  ** CLASS: Network
- ** DEPENDENCIES: [cleanString], (env)
+ ** DEPENDENCIES: [cleanString], [sanitize], (env)
  ** Utility functions for parsing and communicating over the wire
 */
 
 require_once 'env.php';
-require_once 'classes/util/clean-string.php';
+require_once 'lib/util/sanitize.php';
 
 class Network {
 
@@ -43,27 +43,13 @@ class Network {
         return;
     }
 
-    Network::sanitize($data);
+    sanitize($data);  // Does nothing right now
 
     return $data;
   }
   // (END) prepareData
 
 
-  /**
-   * Filters out unwanted characters/strings from the data passed.
-   *
-   * @param Array(*) &$data
-   */
-  public static function sanitize(&$data) {
-    if(S_UTF8) $data = cleanString($data);
-    if(S_HTML) $data = htmlspecialchars($data);
-    if(S_NEWLINE) $data = str_replace(array('\r', '\n'), ' ', $data);
-    if(S_SPECIAL) $data = preg_replace(array('/[\\s-]+/', '/[^A-Za-z0-9\. -]+/'), '', $data); 
-  }
-  // (END) sanitize
-
-  
   /**
    * Figures out the method that was used in the request.
    * PUT and DELETE get buried in POST cause the web is so pragmatic.

@@ -9,7 +9,7 @@
 
 
 // Import the Router
-require_once 'classes/class-router.php';
+require_once 'lib/class-router.php';
 $router = new Router();
 
 
@@ -20,8 +20,6 @@ $router = new Router();
  * Declare your routes here.
  * See documentation/README for details about how to set up routes.
  */
-
-
 
 
 

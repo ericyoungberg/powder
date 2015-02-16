@@ -1,7 +1,7 @@
 <?php
 
 /*
- ** FILE: classes/class-route.php
+ ** FILE: lib/class-route.php
  ** CLASS: Route
  ** DEPENDENCIES: (Manifest)
  ** Handles all responsibilities and states of each route defined in the Router file

@@ -1,7 +1,7 @@
 <?php
 
 /*
- ** FILE: classes/class-database.php
+ ** FILE: lib/class-database.php
  ** CLASS: Database
  ** DEPENDENCIES: Network, (env)
  ** Utility functions for communicating with a SQL database

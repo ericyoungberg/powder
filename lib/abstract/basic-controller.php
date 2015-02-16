@@ -1,14 +1,14 @@
 <?php 
 
 /*
- ** FILE: classes/abstract/basic-controller.php
+ ** FILE: lib/abstract/basic-controller.php
  ** DEPENDENCIES: Network, Database
  **
  ** Declares the BasicController abstract class.
 */
 
-require_once 'classes/class-network.php';
-require_once 'classes/class-database.php';
+require_once 'lib/class-network.php';
+require_once 'lib/class-database.php';
 
 
 /**

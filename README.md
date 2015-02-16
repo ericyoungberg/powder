@@ -1,5 +1,5 @@
 # Powder
-A RESTful API framework for PHP. _1.0.0_
+A RESTful API framework for PHP. _v1.0.1_
 
 ###Installation
 1. `git clone` the repository into your existing project.
@@ -15,7 +15,7 @@ __BasicController__ can handle most requests automatically. To have this happen,
 
 
 ```php
-require_once 'classes/abstract/basic-controller.php';
+require_once 'lib/abstract/basic-controller.php';
 
 class PostsController extends BasicController {}
 

@@ -1,7 +1,7 @@
 <?php
 
 /*
- ** FILE: classes/class-router.php
+ ** FILE: lib/class-router.php
  ** CLASS: Router
  ** DEPENDENCIES: Route, Network, (env)
  ** Creates an expandable router that handles possible connections when
